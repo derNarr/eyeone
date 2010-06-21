@@ -1,0 +1,25 @@
+EyeOne is a python-wrapper for the EyeOne Pro
+Copyright (C) 2010  Konstantin Sering <konstantin.sering [aet] gmail.com>
+Maybe some Copyrights belongs to X-Rite Inc.
+
+This program is dual licensed. You have three options:
+
+1) This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version. (See gpl-3.0.txt or
+<http://www.gnu.org/licenses/>)
+
+2) You can also redistribute this programm and/or modify it under the terms of
+the Creative Commons Attribution-Share Alike License, either version 3 of
+the License or (at your option) any later version. (See
+<http://creativecommons.org/licenses/by-sa/3.0/>)
+
+3) Third you can stuck to the dual license. Make sure, that you do not
+violate any license :)
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
