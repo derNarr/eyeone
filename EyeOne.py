@@ -330,10 +330,10 @@ class EyeOne(object):
         For details see EyeOneConstants.py
         """
         #only called if self.dummy==True
-        if not isinstance(option, c_char_p):
-            raise(TypeError, "option has to be instance of c_char_p (ctypes)")
-        if not isinstance(value, c_char_p):
-            raise(TypeError, "value has to be instance of c_char_p (ctypes)")
+        #if not isinstance(option, c_char_p):
+        #    raise(TypeError, "option has to be instance of c_char_p (ctypes)")
+        #if not isinstance(value, c_char_p):
+        #    raise(TypeError, "value has to be instance of c_char_p (ctypes)")
         # TODO implement options in dummy
         return EyeOneConstants.eNoError
 
@@ -357,8 +357,8 @@ class EyeOne(object):
         For details see EyeOneConstants.py
         """
         #only called if self.dummy==True
-        if not isinstance(option, c_char_p):
-            raise(TypeError, "option has to be instance of c_char_p (ctypes)")
+        #if not isinstance(option, c_char_p):
+        #    raise(TypeError, "option has to be instance of c_char_p (ctypes)")
         # TODO implement options in dummy
         print("I1_GetOption return value always \"Undefined\" for dummy.")
         return c_char_p("Undefined") 
