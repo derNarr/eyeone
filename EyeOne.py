@@ -52,7 +52,7 @@ class EyeOne(object):
         behave very similar to a "real" object, but does not connect to
         the EyeOne and gives some artificial data.
 
-        For now the dummy gives no error codes. So the dummy behave as a
+        For now the dummy gives no error codes. So the dummy behaves as a
         EyeOne without any problems.
         """
         self.dummy = dummy
