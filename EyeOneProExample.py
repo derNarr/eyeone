@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# EyeOne/EyeOneProExample.py
+# eyeone/EyeOneProExample.py
 #
 # (c) 2010 Konstantin Sering <konstantin.sering [aet] gmail.com>
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
@@ -10,9 +10,9 @@
 import time
 
 from ctypes import c_float
-from EyeOne import EyeOneConstants
-from EyeOne import EyeOne # if you running this in the EyeOne folder
-#from EyeOne.EyeOne import EyeOne # looks a bit weard, but is correct (load 
+from eyeone import EyeOneConstants
+from eyeone import EyeOne # if you running this in the eyeone folder
+#from eyeone.EyeOne import EyeOne # looks a bit weard, but is correct (load 
                                  # the object EyeOne the submodule EyeOne 
                                  # out of the module EyeOne
 

@@ -1,5 +1,5 @@
 """
-EyeOne provides the constants in EyeOneConstants and a ctypes interface to
+eyeone provides the constants in EyeOneConstants and a ctypes interface to
 the runtime libraries of the EyeOne.
 """
 

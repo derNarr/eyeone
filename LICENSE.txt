@@ -1,4 +1,4 @@
-EyeOne is a python-wrapper for the EyeOne Pro.
+eyeone is a python-wrapper for the EyeOne Pro.
 
 Copyright (C) 2010-2011  Konstantin Sering <konstantin.sering [aet] gmail.com>
 
