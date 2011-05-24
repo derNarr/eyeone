@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 # eyeone/EyeOne.py
 #
-# (c) 2010 Konstantin Sering <konstantin.sering [aet] gmail.com>
+# (c) 2010-2011 Konstantin Sering <konstantin.sering [aet] gmail.com>
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
 #
 # This file defines a class which implements the python adapted variable
@@ -11,7 +11,7 @@
 #
 # Maybe some Copyrights belongs to X-Rite Inc.
 #
-# last mod 2010-11-07, KS
+# last mod 2011-05-24, KS
 
 from ctypes import cdll,c_int,c_long,c_float,c_char_p 
 from exceptions import IOError, TypeError # if it fails to load dll
@@ -123,7 +123,7 @@ class EyeOne(object):
             self.eye_one.I1_GetOption.__doc__= self.I1_GetOption.__doc__
             self.I1_GetOption = self.eye_one.I1_GetOption
 
-        elif not self.dummy:
+        else:
             # set standard values for dummy
             self.calibrated = False
             self.measurement_triggered = False
