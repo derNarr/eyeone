@@ -10,11 +10,17 @@
 import time
 
 from ctypes import c_float
-from eyeone import EyeOneConstants
-from eyeone import EyeOne # if you running this in the eyeone folder
+try:    # normal import, if eyeone module is installed correctly 
+    from eyeone import EyeOneConstants
+    from eyeone import EyeOne 
+except:    # if you running this in the eyeone folder
+    import EyeOneConstants
+    import EyeOne
+
 #from eyeone.EyeOne import EyeOne # looks a bit weard, but is correct (load 
                                  # the object EyeOne the submodule EyeOne 
                                  # out of the module EyeOne
+EyeOne = EyeOne.EyeOne(dummy=True)
 
 # Check if the EyeOne Pro is connected.
 if (EyeOne.I1_IsConnected() == EyeOneConstants.eNoError):
