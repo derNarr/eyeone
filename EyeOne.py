@@ -10,8 +10,6 @@
 # MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite
 #
 # Maybe some Copyrights belongs to X-Rite Inc.
-#
-# last mod 2011-05-24, KS
 
 from ctypes import cdll,c_int,c_long,c_float,c_char_p 
 from exceptions import IOError, TypeError # if it fails to load dll
@@ -22,38 +20,38 @@ import EyeOneConstants
 ### Prototypes of exported functions (EyeOne.dll) BEGIN ###
 ###########################################################
 
-# I don't really understand the errorhandling, so it is missing. TODO
+# I don't really understand the error handling, so it is missing. TODO
 
 
 class EyeOne(object):
     """
-    encapsulates the functions of the EyeOne.dll.
+    Encapsulates the functions of EyeOne.dll.
 
-    EyeOne gives you an object EyeOne with the following Methods
-    available. For the methods there are ctypes prototypes defined.
-    - I1_IsConnected -- checks if the EyeOne is connected
-    - I1_KeyPressed -- checks if the button on the EyeOne has been pressed
+    EyeOne gives you an object eyeone with the following methods
+    available. For the methods ctypes prototypes are defined.
+    - I1_IsConnected -- checks if EyeOne Pro is connected
+    - I1_KeyPressed -- checks if key on EyeOne Pro has been pressed
     - I1_GetNumberOfAvailableSamples
     - I1_Calibrate -- triggers calibration
     - I1_TriggerMeasurement -- triggers measurement
-    - I1_GetSpectrum -- get the spectrum
-    - I1_GetTriStimulus -- get the colorvector
+    - I1_GetSpectrum -- gets spectrum
+    - I1_GetTriStimulus -- gets color vector
     - I1_GetDensities
     - I1_SetSubstrate
-    - I1_SetOption -- set options
-    - I1_GetOption -- get options
+    - I1_SetOption -- sets options
+    - I1_GetOption -- gets options
     """
 
     def __init__(self, dummy=False):
         """
-        loads runtime library (on win32 EyeOne.dll).
+        Loads runtime library (on win32 EyeOne.dll).
 
         If dummy=True, no runtime library is loaded. The EyeOne object
-        behave very similar to a "real" object, but does not connect to
-        the EyeOne and gives some artificial data.
+        behaves very similar to a "real" object, but does not connect to
+        EyeOne Pro and gives some artificial data.
 
         For now the dummy gives no error codes. So the dummy behaves as a
-        EyeOne without any problems.
+        EyeOne Pro without any problems.
         """
         self.dummy = dummy
 
@@ -136,24 +134,24 @@ class EyeOne(object):
     ######################################################################
     def I1_IsConnected(self):
         """
-        tests if the Eye One is connected.
+        Tests if EyeOne Pro is connected.
         
         Returns enum I1_ErrorType (c_int). eNoError (0), if connected.
-        eDeviceNotConnected (2), if no EyeOne is present.
+        eDeviceNotConnected (2), if no EyeOne Pro is present.
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         return EyeOneConstants.eNoError
 
     def I1_KeyPressed(self):
         """
-        tests if button has been pressed.
+        Tests if key has been pressed.
         
         Returns enum I1_ErrorType (c_int). eNoError (0), if button was
         pressed. eKeyNotPressed (4), if button was not pressed.
 
-        For the dummy the button was always pressed.
+        For dummy key stays always pressed.
 
         For details see EyeOneConstants.py
         """
@@ -162,34 +160,33 @@ class EyeOne(object):
 
     def I1_GetNumberOfAvailableSamples(self):
         """
-        returns amount of currently available samples (c_long).
+        Returns amount of currently available samples (c_long).
         """
         #only called if self.dummy==True
         return c_long(10) #TODO change to plausible number
 
     def I1_Calibrate(self):
         """
-        calibrates the Eye One.
+        Calibrates EyeOne Pro.
         
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error occurs
         during calibration.
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         self.calibrated = True
         return EyeOneConstants.eNoError
 
     def I1_TriggerMeasurement(self):
         """
-        triggers a measurement.
+        Triggers measurement.
 
-        Triggers a measurement depending on the measurement mode set by
-        I1_SetOption. If the measurement mode is set to I1_SINGLE_EMISSION
-        or I1_SCANNING_REFLECTANCE it is necessary to calibrate the Eye-One
+        Triggers measurement depending on measurement mode set by
+        I1_SetOption. If measurement mode is set to I1_SINGLE_EMISSION or
+        I1_SCANNING_REFLECTANCE it is necessary to calibrate the EyeOne Pro
         before any measurement can be triggered. Use GetSpectrum(index),
-        I1_GetTriStimulus(index) or I1_GetDensity(index) to fetch the
-        result.
+        I1_GetTriStimulus(index) or I1_GetDensity(index) to fetch result.
                
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error occurs
         during calibration; eDeviceNotConnected (2), if no device is
@@ -209,23 +206,23 @@ class EyeOne(object):
 
     def I1_GetSpectrum(self, spectrum, index):
         """
-        gets the spectrum of a previous triggered measurement.
+        Gets spectrum of a previous triggered measurement.
 
         Input: spectrum is a c_float array with SPECTRUM_SIZE elements.
-        index is a c_int. The spectrum values are stored in the array.
+        index is a c_int. Spectrum values are stored in array.
 
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error
         occurs; eNoDataAvailable (8), if no measurement has been
-        triggered or if the specified index is out of range.
+        triggered or if specified index is out of range.
 
-        General remarks: Use 0 as Index, to fetch the result of a
+        General remarks: Use 0 as Index to fetch the result of a
         previously triggered single measurement. To fetch a result of a
-        previously triggered scan, specify an index between 0 and
+        previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         if not isinstance(spectrum, c_float * EyeOneConstants.SPECTRUM_SIZE):
             raise(TypeError, "spectrum has to be instance of c_float * SPECTRUM_SIZE")
         if self.measurement_triggered:
@@ -235,23 +232,23 @@ class EyeOne(object):
 
     def I1_GetTriStimulus(self, tri_stimulus, index):
         """
-        gets the color vector of a previous triggered measurement.
+        Gets color vector of a previously triggered measurement.
 
-        Input: tri_stimulus is a c_float array with TRISTIMULUS_SIZE elements.
-        index is a c_int. The color values are stored in the array.
+        Input: tri_stimulus is a c_float array with TRISTIMULUS_SIZE
+        elements. index is a c_int. Color values are stored in array.
 
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error
         occurs; eNoDataAvailable (8), if no measurement has been
-        triggered or if the specified index is out of range.
+        triggered or if specified index is out of range.
 
-        General remarks: Use 0 as Index, to fetch the result of a
+        General remarks: Use 0 as Index to fetch the result of a
         previously triggered single measurement. To fetch a result of a
-        previously triggered scan, specify an index between 0 and
+        previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         if not isinstance(tri_stimulus, c_float * EyeOneConstants.TRISTIMULUS_SIZE):
             raise(TypeError, "tri_stimulus has to be instance of c_float * TRISTIMULUS_SIZE")
         if self.measurement_triggered:
@@ -261,20 +258,19 @@ class EyeOne(object):
 
     def I1_GetDensities(self, densities, index):
         """
-        gets all the densities (cyan, magenta, yellow, black) of a previous
+        Gets all densities (cyan, magenta, yellow, black) of a previous
         triggered measurement.
 
-
         Input: densities is a c_float array with DENSITY_SIZE elements.
-        index is a c_int. The color values are stored in the array.
+        index is a c_int. Color values are stored in array.
 
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error
         occurs; eNoDataAvailable (8), if no measurement has been
-        triggered or if the specified index is out of range.
+        triggered or if specified index is out of range.
 
-        General remarks: Use 0 as Index, to fetch the result of a
+        General remarks: Use 0 as Index to fetch the result of a
         previously triggered single measurement. To fetch a result of a
-        previously triggered scan, specify an index between 0 and
+        previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
         If pxAutoDensity is not null, *pxAutoDensity will be set
@@ -282,7 +278,7 @@ class EyeOne(object):
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         if not isinstance(densities, c_float * EyeOneConstants.DENSITY_SIZE):
             raise(TypeError, "densities has to be instance of c_float * DENSITY_SIZE")
         if self.measurement_triggered:
@@ -292,7 +288,7 @@ class EyeOne(object):
 
     def I1_SetSubstrate(self, substrate_spectrum):
         """
-        sets the substrate spectrum for density calculations.
+        Sets substrate spectrum for density calculations.
 
         Input: substrate_spectrum is a c_float array with SPECTRUM_SIZE
         elements.
@@ -303,7 +299,7 @@ class EyeOne(object):
         SetSubstrate(substrate_spectrum) has to be called before the first
         call of GetDensity().
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         if not isinstance(substrate_spectrum, c_float * EyeOneConstants.SPECTRUM_SIZE):
             raise(TypeError, "substrate_spectrum has to be instance of c_float * SPECTRUM_SIZE")
         self.density_spectrum_set = True
@@ -311,9 +307,9 @@ class EyeOne(object):
 
     def I1_SetOption(self, option, value):
         """
-        sets given option/key (c_char_p) to given value (c_char_p).
+        Sets given option/key (c_char_p) to given value (c_char_p).
         
-        Possible options (for SDK manual or EyeOneConstants.py for possible
+        Possible options (see SDK manual or EyeOneConstants.py for possible
         values):
         * COLOR_SPACE_KEY
         * ILLUMINATION_KEY
@@ -329,7 +325,7 @@ class EyeOne(object):
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         #if not isinstance(option, c_char_p):
         #    raise(TypeError, "option has to be instance of c_char_p (ctypes)")
         #if not isinstance(value, c_char_p):
@@ -339,9 +335,9 @@ class EyeOne(object):
 
     def I1_GetOption(self, option):
         """
-        gets option/key (c_char_p).
+        Gets option/key (c_char_p).
         
-        Possible options (for SDK manual or EyeOneConstants.py for possible
+        Possible options (see SDK manual or EyeOneConstants.py for possible
         values):
         * COLOR_SPACE_KEY
         * ILLUMINATION_KEY
@@ -356,7 +352,7 @@ class EyeOne(object):
 
         For details see EyeOneConstants.py
         """
-        #only called if self.dummy==True
+        # only called if self.dummy==True
         #if not isinstance(option, c_char_p):
         #    raise(TypeError, "option has to be instance of c_char_p (ctypes)")
         # TODO implement options in dummy
@@ -368,11 +364,11 @@ if __name__ == "__main__":
     try:
         eye_one = EyeOne()
     except IOError:
-        print("EyeOne.dll NOT FOUND. Is the driver of Eye One installed?\nload dummy")
+        print("EyeOne.dll NOT FOUND. Is driver of EyeOne Pro installed?\nLoad dummy.")
         eye_one = EyeOne(dummy=True)
 
     if eye_one.I1_IsConnected() == EyeOneConstants.eNoError:
-        print("Eye One is connected")
+        print("EyeOne Pro is connected.")
 
     eye_one.I1_Calibrate()
     eye_one.I1_TriggerMeasurement()
