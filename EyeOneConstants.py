@@ -8,8 +8,9 @@
 # last mod 2010-04-20, KS
 
 """
-This are for python adapted variable definitions of the EyeOne.h and the
-MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite.
+These are variable definitions  of the EyeOne.h and the
+MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite adapted for
+python.
 """
 
 # Maybe some Copyrights belongs to X-Rite Inc.
@@ -17,7 +18,7 @@ MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite.
 #++++++++++++++++++++++ BEGIN -- MeasurementConditions.h ++++++++++++++++
 
 #------------------------------------------------------------------------
-#  defines for the used string- constants in MeasureConditions
+#  definitions for the used string- constants in MeasureConditions
 #------------------------------------------------------------------------
 
 UNDEFINED                    = "Undefined"
@@ -135,7 +136,7 @@ I1_SCREEN_TYPE                   = "ScreenType"    #mandatory for i1-display
 I1_LCD_SCREEN                    = "LCD"
 I1_CRT_SCREEN                    = "CRT"
 
-I1_PATCH_INTENSITY               = "PatchIntensity" #used with i1-display
+I1_PATCH_INTENSITY               = "PatchIntensity" # used with i1-display
 I1_BLEAK                         = "Bleak"
 I1_BRIGHT                        = "Bright"
 I1_AUTO                          = "Auto"
@@ -159,7 +160,7 @@ I1_SINGLE_AMBIENT_LIGHT          = "SingleAmbientLight"
 I1_SCANNING_REFLECTANCE          = "ScanningReflectance"
 I1_SCANNING_AMBIENT_LIGHT        = "ScanningAmbientLight"
 
-I1_RESET                         = "Reset" #reset command parameters: I1_ALL, DeviceTypes, MeasurementModes
+I1_RESET                         = "Reset" # reset command parameters: I1_ALL, DeviceTypes, MeasurementModes
 I1_ALL                           = "All"
 
 # dirty implementation of one way enum I1_ErrorType BEGIN TODO

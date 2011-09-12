@@ -17,7 +17,7 @@ except:    # if you running this in the eyeone folder
     import EyeOneConstants
     import EyeOne
 
-#from eyeone.EyeOne import EyeOne # looks a bit weard, but is correct (load 
+#from eyeone.EyeOne import EyeOne # looks a bit weird, but is correct (load 
                                  # the object EyeOne the submodule EyeOne 
                                  # out of the module EyeOne
 EyeOne = EyeOne.EyeOne(dummy=True)
@@ -70,7 +70,7 @@ else:
 colorspace = (c_float * EyeOneConstants.TRISTIMULUS_SIZE)()
 spectrum = (c_float * EyeOneConstants.SPECTRUM_SIZE)()
 
-# Trigger measurement and retrive spectrum and colorspace.
+# Trigger measurement and retrieve spectrum and color space.
 print("\nPlease put the EyeOne-Pro in measurement position and press the \
 key to start measurement.")
 while(EyeOne.I1_KeyPressed() != EyeOneConstants.eNoError):
@@ -82,7 +82,7 @@ if(EyeOne.I1_GetSpectrum(spectrum, 0) != EyeOneConstants.eNoError):
 if(EyeOne.I1_GetTriStimulus(colorspace, 0) != EyeOneConstants.eNoError):
     print("Failed to get colorspace.")
     
-# print colorspace and spectrum
+# print color space and spectrum
 
 print("RGB values are: " + str(colorspace[:]) + "\n")
 print("Spectrum:\n" + str(spectrum[:]))
