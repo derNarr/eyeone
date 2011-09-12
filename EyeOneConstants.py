@@ -5,7 +5,7 @@
 # (c) 2010 Konstantin Sering <konstantin.sering [aet] gmail.com>
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
 #
-# last mod 2010-04-20, KS
+# Maybe some Copyrights belong to X-Rite Inc.
 
 """
 These are variable definitions  of the EyeOne.h and the
@@ -13,12 +13,10 @@ MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite adapted for
 python.
 """
 
-# Maybe some Copyrights belongs to X-Rite Inc.
-
 #++++++++++++++++++++++ BEGIN -- MeasurementConditions.h ++++++++++++++++
 
 #------------------------------------------------------------------------
-#  definitions for the used string- constants in MeasureConditions
+#  definitions for string-constants used in MeasurementConditions
 #------------------------------------------------------------------------
 
 UNDEFINED                    = "Undefined"
@@ -107,7 +105,7 @@ I1_EXTENDED_ERROR_INFORMATION    = "ExtendedErrorInformation"
 I1_YES                           = "yes"
 I1_NO                            = "no"
 
-# Eye-One key/values 
+# EyeOne key/values 
 I1_VERSION                       = "Version"
 I1_MAJOR_VERSION                 = "MajorVersion"
 I1_MINOR_VERSION                 = "MinorVersion"
@@ -127,12 +125,12 @@ I1_IS_ADAPTIVE_MODE_ENABLED      = "AdaptiveMode"
 I1_IS_NETPROFILER_ENABLED        = "NetProfiler"
 I1_INTEGRATION_TIME              = "IntegrationTime"
 
-I1_PHYSICAL_FILTER               = "PhysicalFilter" #read only
+I1_PHYSICAL_FILTER               = "PhysicalFilter" # read only
 I1_UNDEFINED_FILTER              = "0"    
 I1_NO_FILTER                     = "1"
 I1_UV_FILTER                     = "2"
 
-I1_SCREEN_TYPE                   = "ScreenType"    #mandatory for i1-display
+I1_SCREEN_TYPE                   = "ScreenType"    # mandatory for i1-display
 I1_LCD_SCREEN                    = "LCD"
 I1_CRT_SCREEN                    = "CRT"
 
@@ -144,8 +142,7 @@ I1_AUTO                          = "Auto"
 I1_DEVICE_TYPE                   = "DeviceType"
 I1_EYEONE                        = "EyeOne"      # this is the default device 
 I1_EYEONE_1                      = "EyeOne1"     # this is the first alternative device found on the USB bus 
-I1_EYEONE_2                      = "EyeOne2"
-# ...  # all other defines must be created on demand 
+I1_EYEONE_2                      = "EyeOne2"     # ...  # all other definitions must be created on demand 
 I1_EYEONE_127                    = "EyeOne127"   # this is the last device on the bus 
 I1_DISPLAY                       = "EyeOneDisplay"
 
@@ -168,26 +165,26 @@ eNoError                         =  0      # no error
 eDeviceNotReady                  =  1      # device not ready	
 eDeviceNotConnected              =  2      # device not connected	
 eDeviceNotCalibrated             =  3      # device not calibrated 
-eKeyNotPressed                   =  4      # if no button	has been pressed 
-eNoSubstrateWhite                =  5      # no substrate	white reference	set 
+eKeyNotPressed                   =  4      # if no key has been pressed 
+eNoSubstrateWhite                =  5      # no substrate white reference set 
 eWrongMeasureMode                =  6      # wrong measurement mode 
 eStripRecognitionFailed          =  7      # if the measurement mode is set to scanning and recognition is enabled 
-eNoDataAvailable                 =  8      # measurement not triggered, index out	of range (scanning) 
-eException                       =  9      # internal exception, use I1_GetOption(I1_LAST_ERROR)	for more details 
-eInvalidArgument                 = 10      # if a	passed method argument is invalid (i.e. NULL) 
+eNoDataAvailable                 =  8      # measurement not triggered, index out of range (scanning) 
+eException                       =  9      # internal exception, use I1_GetOption(I1_LAST_ERROR) for more details 
+eInvalidArgument                 = 10      # if a passed method argument is invalid (i.e. NULL) 
 eUnknownError                    = 12      # unknown error occurred 
 eWrongDeviceType                 = 13      # operation not supported by this device type 
-I1_ADDITIONAL_ERRORS             = 14      # extend error types 
+I1_ADDITIONAL_ERRORS             = 14      # extend error types
 # dirty enum END                   
 
 # dirty implementation of one way enum I1_DeviceMessage BEGIN TODO
-eDeviceButtonPressed             = 0       # button pressed on device 
+eDeviceButtonPressed             = 0       # key on device pressed 
 eDeviceDisconnected              = 1       # device disconnected 
 I1_ADDITIONAL_MESSAGES           = 2       # extend messages 
 # dirty enum END
 
 
-### NOTICE the prototypes of the function are in the EyeOne/EyeOne.py ###
+### NOTICE the prototypes of the function are in eyeone/EyeOne.py ###
 
 #++++++++++++++++++++++ END -- EyeOne.h +++++++++++++++++++++++++++++++++
 
