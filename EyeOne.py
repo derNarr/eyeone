@@ -29,17 +29,18 @@ class EyeOne(object):
 
     EyeOne gives you an object eyeone with the following methods
     available. For the methods ctypes prototypes are defined.
-    - I1_IsConnected -- checks if EyeOne Pro is connected
-    - I1_KeyPressed -- checks if key on EyeOne Pro has been pressed
-    - I1_GetNumberOfAvailableSamples
-    - I1_Calibrate -- triggers calibration
-    - I1_TriggerMeasurement -- triggers measurement
-    - I1_GetSpectrum -- gets spectrum
-    - I1_GetTriStimulus -- gets color vector
-    - I1_GetDensities
-    - I1_SetSubstrate
-    - I1_SetOption -- sets options
-    - I1_GetOption -- gets options
+
+    * I1_IsConnected -- checks if EyeOne Pro is connected
+    * I1_KeyPressed -- checks if key on EyeOne Pro has been pressed
+    * I1_GetNumberOfAvailableSamples
+    * I1_Calibrate -- triggers calibration
+    * I1_TriggerMeasurement -- triggers measurement
+    * I1_GetSpectrum -- gets spectrum
+    * I1_GetTriStimulus -- gets color vector
+    * I1_GetDensities
+    * I1_SetSubstrate
+    * I1_SetOption -- sets options
+    * I1_GetOption -- gets options
     """
 
     def __init__(self, dummy=False):
@@ -311,6 +312,7 @@ class EyeOne(object):
         
         Possible options (see SDK manual or EyeOneConstants.py for possible
         values):
+
         * COLOR_SPACE_KEY
         * ILLUMINATION_KEY
         * OBSERVER_KEY
@@ -339,6 +341,7 @@ class EyeOne(object):
         
         Possible options (see SDK manual or EyeOneConstants.py for possible
         values):
+
         * COLOR_SPACE_KEY
         * ILLUMINATION_KEY
         * OBSERVER_KEY
