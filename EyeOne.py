@@ -12,7 +12,7 @@
 # Maybe some Copyrights belongs to X-Rite Inc.
 
 from ctypes import cdll,c_int,c_long,c_float,c_char_p 
-from exceptions import IOError, TypeError, BaseException # if it fails to load dll
+from exceptions import OSError, ImportError, BaseException # if it fails to load dll
 
 import EyeOneConstants
 
@@ -119,7 +119,7 @@ class EyeOne(object):
             self.eye_one.I1_GetOption.__doc__= self.I1_GetOption.__doc__
             self.I1_GetOption = self.eye_one.I1_GetOption
 
-        except:
+        except(OSError, ImportError, BaseException): 
             print('''########## WARNING ##########
                     Cannot load EyeOne.dll. Creating EyeOne dummy!
                     ########## WARNING ##########''')
