@@ -12,7 +12,7 @@
 # Maybe some Copyrights belongs to X-Rite Inc.
 
 from ctypes import cdll,c_int,c_long,c_float,c_char_p 
-from exceptions import IOError, TypeError # if it fails to load dll
+from exceptions import IOError, TypeError, BaseException # if it fails to load dll
 
 import EyeOneConstants
 
@@ -56,13 +56,10 @@ class EyeOne(object):
         """
         self.dummy = dummy
 
-        if not self.dummy:
-            try:
-                self.eye_one = cdll.EyeOne
-            except:
-                raise(IOError, '''Cannot load EyeOne.dll. Please install
-                        EyeOne.dll before running this again or use
-                        EyeOne(dummy=True) to create EyeOne object.''')
+        try:
+            if self.dummy is True
+                raise(BaseException)
+            self.eye_one = cdll.EyeOne
             ## initialize c_functions and set prototypes
             # I1_IsConnected
             self.eye_one.I1_IsConnected.restype = c_int #enum I1_ErrorType
@@ -122,7 +119,10 @@ class EyeOne(object):
             self.eye_one.I1_GetOption.__doc__= self.I1_GetOption.__doc__
             self.I1_GetOption = self.eye_one.I1_GetOption
 
-        else:
+        except:
+            print('''########## WARNING ##########
+                    Cannot load EyeOne.dll. Creating EyeOne dummy!
+                    ########## WARNING ##########''')
             # set standard values for dummy
             self.calibrated = False
             self.measurement_triggered = False
