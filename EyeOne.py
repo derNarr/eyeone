@@ -5,6 +5,8 @@
 # (c) 2010-2011 Konstantin Sering <konstantin.sering [aet] gmail.com>
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
 #
+# last mod 2011-10-14 KS
+#
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
 # MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite
@@ -120,8 +122,11 @@ class EyeOne(object):
             self.I1_GetOption = self.eye_one.I1_GetOption
 
         except(OSError, ImportError, BaseException): 
-            print('''########## WARNING ##########
-                    Cannot load EyeOne.dll. Creating EyeOne dummy!''')
+            print('''
+                  ##################### WARNING ####################
+                  # Cannot load EyeOne.dll. Creating EyeOne dummy! #
+                  ##################################################
+                  ''')
             # set standard values for dummy
             self.calibrated = False
             self.measurement_triggered = False
