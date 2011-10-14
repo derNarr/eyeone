@@ -57,7 +57,7 @@ class EyeOne(object):
         self.dummy = dummy
 
         try:
-            if self.dummy is True
+            if self.dummy is True:
                 raise(BaseException)
             self.eye_one = cdll.EyeOne
             ## initialize c_functions and set prototypes
@@ -121,8 +121,7 @@ class EyeOne(object):
 
         except(OSError, ImportError, BaseException): 
             print('''########## WARNING ##########
-                    Cannot load EyeOne.dll. Creating EyeOne dummy!
-                    ########## WARNING ##########''')
+                    Cannot load EyeOne.dll. Creating EyeOne dummy!''')
             # set standard values for dummy
             self.calibrated = False
             self.measurement_triggered = False
