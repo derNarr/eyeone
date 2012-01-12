@@ -273,12 +273,12 @@ class EyeOne(object):
         occurs; eNoDataAvailable (8), if no measurement has been
         triggered or if specified index is out of range.
 
-        General remarks: Use 0 as Index to fetch the result of a
+        General remarks: Use 0 as index to fetch the result of a
         previously triggered single measurement. To fetch a result of a
         previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
-        If pxAutoDensity is not null, *pxAutoDensity will be set
+        If pxAutoDensity is not null, \*pxAutoDensity will be set
         accordingly.
 
         For details see EyeOneConstants.py
