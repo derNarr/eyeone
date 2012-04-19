@@ -5,7 +5,7 @@
 # (c) 2010-2011 Konstantin Sering <konstantin.sering [aet] gmail.com>
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
 #
-# last mod 2011-10-14 KS
+# last mod 2012-04-19 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
@@ -13,8 +13,9 @@
 #
 # Maybe some Copyrights belongs to X-Rite Inc.
 
-from ctypes import cdll,c_int,c_long,c_float,c_char_p 
-from exceptions import OSError, ImportError, BaseException # if it fails to load dll
+from ctypes import cdll, c_int, c_long, c_float, c_char_p
+#from exceptions import OSError, ImportError, BaseException, KeyError
+# if it fails to load dll
 
 import EyeOneConstants
 
@@ -60,66 +61,77 @@ class EyeOne(object):
 
         try:
             if self.dummy is True:
-                raise(BaseException)
-            self.eye_one = cdll.EyeOne
+                raise BaseException()
+            self.eyeone = cdll.EyeOne
             ## initialize c_functions and set prototypes
             # I1_IsConnected
-            self.eye_one.I1_IsConnected.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_IsConnected.argtypes = []
-            self.eye_one.I1_IsConnected.__doc__= self.I1_IsConnected.__doc__
-            self.I1_IsConnected = self.eye_one.I1_IsConnected
+            self.eyeone.I1_IsConnected.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_IsConnected.argtypes = []
+            self.eyeone.I1_IsConnected.__doc__ = self.I1_IsConnected.__doc__
+            self.I1_IsConnected = self.eyeone.I1_IsConnected
             # I1_KeyPressed
-            self.eye_one.I1_KeyPressed.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_KeyPressed.argtypes = []
-            self.eye_one.I1_KeyPressed.__doc__= self.I1_KeyPressed.__doc__
-            self.I1_KeyPressed = self.eye_one.I1_KeyPressed
+            self.eyeone.I1_KeyPressed.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_KeyPressed.argtypes = []
+            self.eyeone.I1_KeyPressed.__doc__ = self.I1_KeyPressed.__doc__
+            self.I1_KeyPressed = self.eyeone.I1_KeyPressed
             # I1_GetNumberOfAvailableSamples
-            self.eye_one.I1_GetNumberOfAvailableSamples.restype = c_long
-            self.eye_one.I1_GetNumberOfAvailableSamples.argtypes = []
-            self.eye_one.I1_GetNumberOfAvailableSamples.__doc__= self.I1_GetNumberOfAvailableSamples.__doc__
-            self.I1_GetNumberOfAvailableSamples = self.eye_one.I1_GetNumberOfAvailableSamples
+            self.eyeone.I1_GetNumberOfAvailableSamples.restype = c_long
+            self.eyeone.I1_GetNumberOfAvailableSamples.argtypes = []
+            self.eyeone.I1_GetNumberOfAvailableSamples.__doc__ = \
+                    self.I1_GetNumberOfAvailableSamples.__doc__
+            self.I1_GetNumberOfAvailableSamples = \
+                    self.eyeone.I1_GetNumberOfAvailableSamples
             
             ## trigger measurements / calibrations
             # I1_Calibrate
-            self.eye_one.I1_Calibrate.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_Calibrate.argtypes = []
-            self.eye_one.I1_Calibrate.__doc__= self.I1_Calibrate.__doc__
-            self.I1_Calibrate = self.eye_one.I1_Calibrate
+            self.eyeone.I1_Calibrate.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_Calibrate.argtypes = []
+            self.eyeone.I1_Calibrate.__doc__ = self.I1_Calibrate.__doc__
+            self.I1_Calibrate = self.eyeone.I1_Calibrate
             # I1_TriggerMeasurement
-            self.eye_one.I1_TriggerMeasurement.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_TriggerMeasurement.argtypes = []
-            self.eye_one.I1_TriggerMeasurement.__doc__= self.I1_TriggerMeasurement.__doc__
-            self.I1_TriggerMeasurement = self.eye_one.I1_TriggerMeasurement
+            self.eyeone.I1_TriggerMeasurement.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_TriggerMeasurement.argtypes = []
+            self.eyeone.I1_TriggerMeasurement.__doc__ = \
+                    self.I1_TriggerMeasurement.__doc__
+            self.I1_TriggerMeasurement = self.eyeone.I1_TriggerMeasurement
             # I1_GetSpectrum
-            self.eye_one.I1_GetSpectrum.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_GetSpectrum.argtypes = [c_float * EyeOneConstants.SPECTRUM_SIZE, c_long]
-            self.eye_one.I1_GetSpectrum.__doc__= self.I1_GetSpectrum.__doc__
-            self.I1_GetSpectrum = self.eye_one.I1_GetSpectrum
+            self.eyeone.I1_GetSpectrum.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_GetSpectrum.argtypes = \
+                    [c_float * EyeOneConstants.SPECTRUM_SIZE, c_long]
+            self.eyeone.I1_GetSpectrum.__doc__ = self.I1_GetSpectrum.__doc__
+            self.I1_GetSpectrum = self.eyeone.I1_GetSpectrum
             # I1_GetTriStimulus
-            self.eye_one.I1_GetTriStimulus.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_GetTriStimulus.argtypes = [c_float * EyeOneConstants.TRISTIMULUS_SIZE, c_long]
-            self.eye_one.I1_GetTriStimulus.__doc__= self.I1_GetTriStimulus.__doc__
-            self.I1_GetTriStimulus = self.eye_one.I1_GetTriStimulus
+            self.eyeone.I1_GetTriStimulus.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_GetTriStimulus.argtypes = \
+                    [c_float * EyeOneConstants.TRISTIMULUS_SIZE, c_long]
+            self.eyeone.I1_GetTriStimulus.__doc__ = \
+                    self.I1_GetTriStimulus.__doc__
+            self.I1_GetTriStimulus = self.eyeone.I1_GetTriStimulus
             # I1_GetDensities
-            self.eye_one.I1_GetDensities.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_GetDensities.argtypes = [c_float * EyeOneConstants.DENSITY_SIZE, c_long]
-            self.eye_one.I1_GetDensities.__doc__= self.I1_GetDensities.__doc__
-            self.I1_GetDensities = self.eye_one.I1_GetDensities
+            self.eyeone.I1_GetDensities.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_GetDensities.argtypes = \
+                    [c_float * EyeOneConstants.DENSITY_SIZE, c_long]
+            self.eyeone.I1_GetDensities.__doc__ = \
+                    self.I1_GetDensities.__doc__
+            self.I1_GetDensities = self.eyeone.I1_GetDensities
             # I1_SetSubstrate
-            self.eye_one.I1_SetSubstrate.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_SetSubstrate.argtypes = [c_float * EyeOneConstants.SPECTRUM_SIZE, c_long]
-            self.eye_one.I1_SetSubstrate.__doc__= self.I1_SetSubstrate.__doc__
-            self.I1_SetSubstrate = self.eye_one.I1_SetSubstrate
+            self.eyeone.I1_SetSubstrate.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_SetSubstrate.argtypes = \
+                    [c_float * EyeOneConstants.SPECTRUM_SIZE, c_long]
+            self.eyeone.I1_SetSubstrate.__doc__ = \
+                    self.I1_SetSubstrate.__doc__
+            self.I1_SetSubstrate = self.eyeone.I1_SetSubstrate
             # I1_SetOption
-            self.eye_one.I1_SetOption.restype = c_int #enum I1_ErrorType
-            self.eye_one.I1_SetOption.argtypes = [c_char_p, c_char_p] #option/key, value
-            self.eye_one.I1_SetOption.__doc__= self.I1_SetOption.__doc__
-            self.I1_SetOption = self.eye_one.I1_SetOption
+            self.eyeone.I1_SetOption.restype = c_int #enum I1_ErrorType
+            self.eyeone.I1_SetOption.argtypes = \
+                    [c_char_p, c_char_p] #option/key, value
+            self.eyeone.I1_SetOption.__doc__ = self.I1_SetOption.__doc__
+            self.I1_SetOption = self.eyeone.I1_SetOption
             # I1_GetOption
-            self.eye_one.I1_GetOption.restype = c_char_p #value
-            self.eye_one.I1_GetOption.argtypes = [c_char_p] #option/key
-            self.eye_one.I1_GetOption.__doc__= self.I1_GetOption.__doc__
-            self.I1_GetOption = self.eye_one.I1_GetOption
+            self.eyeone.I1_GetOption.restype = c_char_p #value
+            self.eyeone.I1_GetOption.argtypes = [c_char_p] #option/key
+            self.eyeone.I1_GetOption.__doc__ = self.I1_GetOption.__doc__
+            self.I1_GetOption = self.eyeone.I1_GetOption
 
         except(OSError, ImportError, BaseException): 
             print('''
@@ -130,6 +142,7 @@ class EyeOne(object):
             # set standard values for dummy
             self.calibrated = False
             self.measurement_triggered = False
+            self.options = dict()
 
 
     ######################################################################
@@ -229,7 +242,8 @@ class EyeOne(object):
         """
         # only called if self.dummy==True
         if not isinstance(spectrum, c_float * EyeOneConstants.SPECTRUM_SIZE):
-            raise(TypeError, "spectrum has to be instance of c_float * SPECTRUM_SIZE")
+            raise TypeError('''spectrum has to be instance of c_float *
+            SPECTRUM_SIZE''')
         if self.measurement_triggered:
             return EyeOneConstants.eNoError
         else:
@@ -254,8 +268,10 @@ class EyeOne(object):
         For details see EyeOneConstants.py
         """
         # only called if self.dummy==True
-        if not isinstance(tri_stimulus, c_float * EyeOneConstants.TRISTIMULUS_SIZE):
-            raise(TypeError, "tri_stimulus has to be instance of c_float * TRISTIMULUS_SIZE")
+        if not isinstance(tri_stimulus,
+                c_float * EyeOneConstants.TRISTIMULUS_SIZE):
+            raise TypeError('''tri_stimulus has to be instance of c_float *
+            TRISTIMULUS_SIZE''')
         if self.measurement_triggered:
             return EyeOneConstants.eNoError
         else:
@@ -284,8 +300,10 @@ class EyeOne(object):
         For details see EyeOneConstants.py
         """
         # only called if self.dummy==True
-        if not isinstance(densities, c_float * EyeOneConstants.DENSITY_SIZE):
-            raise(TypeError, "densities has to be instance of c_float * DENSITY_SIZE")
+        if not isinstance(densities, c_float *
+                EyeOneConstants.DENSITY_SIZE):
+            raise TypeError('''densities has to be instance of c_float *
+            DENSITY_SIZE''')
         if self.measurement_triggered:
             return EyeOneConstants.eNoError
         else:
@@ -305,8 +323,10 @@ class EyeOne(object):
         call of GetDensity().
         """
         # only called if self.dummy==True
-        if not isinstance(substrate_spectrum, c_float * EyeOneConstants.SPECTRUM_SIZE):
-            raise(TypeError, "substrate_spectrum has to be instance of c_float * SPECTRUM_SIZE")
+        if not isinstance(substrate_spectrum, c_float *
+                EyeOneConstants.SPECTRUM_SIZE):
+            raise TypeError('''substrate_spectrum has to be instance of
+            c_float * SPECTRUM_SIZE''')
         self.density_spectrum_set = True
         return EyeOneConstants.eNoError
 
@@ -332,11 +352,10 @@ class EyeOne(object):
         For details see EyeOneConstants.py
         """
         # only called if self.dummy==True
-        #if not isinstance(option, c_char_p):
-        #    raise(TypeError, "option has to be instance of c_char_p (ctypes)")
-        #if not isinstance(value, c_char_p):
-        #    raise(TypeError, "value has to be instance of c_char_p (ctypes)")
-        # TODO implement options in dummy
+        if not isinstance(value, c_char_p):
+            value = c_char_p(value)
+        if isinstance(option, c_char_p):
+            self.options[option.value] = value
         return EyeOneConstants.eNoError
 
     def I1_GetOption(self, option):
@@ -360,28 +379,32 @@ class EyeOne(object):
         For details see EyeOneConstants.py
         """
         # only called if self.dummy==True
-        #if not isinstance(option, c_char_p):
-        #    raise(TypeError, "option has to be instance of c_char_p (ctypes)")
-        # TODO implement options in dummy
-        print("I1_GetOption return value always \"Undefined\" for dummy.")
-        return c_char_p("Undefined") 
+        if not isinstance(option, c_char_p):
+            option = c_char_p(option)
+        try:
+            return self.options[option.value]
+        except KeyError:
+            print("WARNING: option might not be there in a real eyeone")
+            print('''If option is not set explicitly, I1_GetOption returns
+                    "Undefined" in dummy mode.''')
+            return c_char_p("Undefined") 
 
 
 if __name__ == "__main__":
     try:
-        eye_one = EyeOne()
+        eyeone = EyeOne()
     except IOError:
-        print("EyeOne.dll NOT FOUND. Is driver of EyeOne Pro installed?\nLoad dummy.")
-        eye_one = EyeOne(dummy=True)
+        print('''EyeOne.dll NOT FOUND. Is driver of EyeOne Pro
+        installed?\nLoad dummy.''')
+        eyeone = EyeOne(dummy=True)
 
-    if eye_one.I1_IsConnected() == EyeOneConstants.eNoError:
+    if eyeone.I1_IsConnected() == EyeOneConstants.eNoError:
         print("EyeOne Pro is connected.")
 
-    eye_one.I1_Calibrate()
-    eye_one.I1_TriggerMeasurement()
+    eyeone.I1_Calibrate()
+    eyeone.I1_TriggerMeasurement()
     spectrum = (c_float * EyeOneConstants.SPECTRUM_SIZE)()
-    eye_one.I1_GetSpectrum(spectrum, 0)
+    eyeone.I1_GetSpectrum(spectrum, 0)
     print("This is a spectrum:")
     print([float(f) for f in spectrum])
 
-   
