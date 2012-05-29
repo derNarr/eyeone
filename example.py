@@ -1,48 +1,58 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# eyeone/EyeOneProExample.py
+# eyeone/example.py
 #
-# (c) 2010 Konstantin Sering <konstantin.sering [aet] gmail.com>
+# (c) 2010-2012 Konstantin Sering, Nora Umbach, Dominik Wabersich
+# <colorlab[at]psycho.uni-tuebingen.de>
+#
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
+#
+# content:
+#
+# input: --
+# output: --
+#
+# created --
+# last mod 2012-05-29 KS
 
 import time
 
 from ctypes import c_float
-try:    # normal import, if eyeone module is installed correctly 
-    from eyeone import EyeOneConstants
-    from eyeone import EyeOne 
+try:    # normal import, if eyeone module is installed correctly
+    from eyeone import constants
+    from eyeone import eyeone
 except:    # if you running this in the eyeone folder
-    import EyeOneConstants
-    import EyeOne
+    import constants
+    import eyeone
 
-# from eyeone.EyeOne import EyeOne # looks a bit weird, but is correct (load 
-                                   # the object EyeOne the submodule EyeOne 
-                                   # out of the module EyeOne
-EyeOne = EyeOne.EyeOne(dummy=True)
+# from eyeone.eyeone import EyeOne # looks a bit weird, but is correct (load
+                                   # the object eyeone the submodule eyeone
+                                   # out of the module eyeone
+eyeone = eyeone.EyeOne(dummy=True)
 
-# Check if EyeOne Pro is connected.
-if (EyeOne.I1_IsConnected() == EyeOneConstants.eNoError):
-    print("EyeOne Pro is connected.")
+# Check if eyeone Pro is connected.
+if (eyeone.I1_IsConnected() == constants.eNoError):
+    print("eyeone Pro is connected.")
 else:
     print("Connection could not be found.")
 
-# Print version and serial number of EyeOne Pro
+# Print version and serial number of eyeone Pro
 print("SDK_Version: " +
-        str(EyeOne.I1_GetOption("Version")))
+        str(eyeone.I1_GetOption("Version")))
 print("Device serial number: " +
-        str(EyeOne.I1_GetOption("SerialNumber")) + "\n")
+        str(eyeone.I1_GetOption("SerialNumber")) + "\n")
 
-if(EyeOne.I1_SetOption(EyeOneConstants.I1_MEASUREMENT_MODE, 
-    EyeOneConstants.I1_SINGLE_EMISSION) ==
-        EyeOneConstants.eNoError):
+if(eyeone.I1_SetOption(constants.I1_MEASUREMENT_MODE,
+    constants.I1_SINGLE_EMISSION) ==
+        constants.eNoError):
     print("Measurement mode set to single emission.")
 else:
     print("Failed to set measurement mode.")
 
 # Set color space
-if(EyeOne.I1_SetOption(EyeOneConstants.COLOR_SPACE_KEY, 
-    EyeOneConstants.COLOR_SPACE_RGB) ==
-        EyeOneConstants.eNoError):
+if(eyeone.I1_SetOption(constants.COLOR_SPACE_KEY,
+    constants.COLOR_SPACE_RGB) ==
+        constants.eNoError):
     print("Color space set to RGB.")
 else:
     print("Failed to set color space.")
@@ -50,36 +60,36 @@ else:
 
 ## Calibration
 
-print("\nPlease put EyeOne Pro on calibration plate and press \
+print("\nPlease put eyeone Pro on calibration plate and press \
 key to start calibration.")
-while(EyeOne.I1_KeyPressed() != EyeOneConstants.eNoError):
+while(eyeone.I1_KeyPressed() != constants.eNoError):
     time.sleep(0.1)
-if (EyeOne.I1_Calibrate() == EyeOneConstants.eNoError):
+if (eyeone.I1_Calibrate() == constants.eNoError):
     print("Calibration done.")
 else:
     print("Calibration failed.")
 
 ## Initializing some variables to retrieve measurements.
 
-# (c_float * EyeOneConstants.TRISTIMULUS_SIZE) creates an _ctypes.ArrayType
+# (c_float * constants.TRISTIMULUS_SIZE) creates an _ctypes.ArrayType
 # object, wich has to be called to initialize one
 # __main__.c_float_Array_TRIESTIMULUS_SIZE object.
 # For more details see ctypes documentation.
-colorspace = (c_float * EyeOneConstants.TRISTIMULUS_SIZE)()
-spectrum = (c_float * EyeOneConstants.SPECTRUM_SIZE)()
+colorspace = (c_float * constants.TRISTIMULUS_SIZE)()
+spectrum = (c_float * constants.SPECTRUM_SIZE)()
 
 # Trigger measurement and retrieve spectrum and color space.
-print("\nPlease put EyeOne Pro in measurement position and press \
+print("\nPlease put eyeone Pro in measurement position and press \
 key to start measurement.")
-while(EyeOne.I1_KeyPressed() != EyeOneConstants.eNoError):
+while(eyeone.I1_KeyPressed() != constants.eNoError):
     time.sleep(0.1)
-if(EyeOne.I1_TriggerMeasurement() != EyeOneConstants.eNoError):
+if(eyeone.I1_TriggerMeasurement() != constants.eNoError):
     print("Measurement failed.")
-if(EyeOne.I1_GetSpectrum(spectrum, 0) != EyeOneConstants.eNoError):
+if(eyeone.I1_GetSpectrum(spectrum, 0) != constants.eNoError):
     print("Failed to get spectrum.")
-if(EyeOne.I1_GetTriStimulus(colorspace, 0) != EyeOneConstants.eNoError):
+if(eyeone.I1_GetTriStimulus(colorspace, 0) != constants.eNoError):
     print("Failed to get color space.")
-    
+
 # print color space and spectrum
 
 print("RGB values: " + str(colorspace[:]) + "\n")

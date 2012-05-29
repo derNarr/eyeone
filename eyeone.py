@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-# eyeone/EyeOne.py
+# eyeone/eyeone.py
 #
-# (c) 2010-2011 Konstantin Sering <konstantin.sering [aet] gmail.com>
+# (c) 2010-2012 Konstantin Sering, Nora Umbach, Dominik Wabersich
+# <colorlab[at]psycho.uni-tuebingen.de>
+#
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
 #
-# last mod 2012-04-19 KS
+# content:
+#
+# input: --
+# output: --
+#
+# created --
+# last mod 2012-05-29 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
@@ -17,13 +25,14 @@ from ctypes import cdll, c_int, c_long, c_float, c_char_p
 #from exceptions import OSError, ImportError, BaseException, KeyError
 # if it fails to load dll
 
-import EyeOneConstants
+import constants
 
 ###########################################################
 ### Prototypes of exported functions (EyeOne.dll) BEGIN ###
 ###########################################################
 
-# I don't really understand the error handling, so it is missing. TODO
+# I don't if it is possible to implement the callback the error handling ,
+# so it is missing. TODO
 
 
 class EyeOne(object):
@@ -97,27 +106,27 @@ class EyeOne(object):
             # I1_GetSpectrum
             self.eyeone.I1_GetSpectrum.restype = c_int #enum I1_ErrorType
             self.eyeone.I1_GetSpectrum.argtypes = \
-                    [c_float * EyeOneConstants.SPECTRUM_SIZE, c_long]
+                    [c_float * constants.SPECTRUM_SIZE, c_long]
             self.eyeone.I1_GetSpectrum.__doc__ = self.I1_GetSpectrum.__doc__
             self.I1_GetSpectrum = self.eyeone.I1_GetSpectrum
             # I1_GetTriStimulus
             self.eyeone.I1_GetTriStimulus.restype = c_int #enum I1_ErrorType
             self.eyeone.I1_GetTriStimulus.argtypes = \
-                    [c_float * EyeOneConstants.TRISTIMULUS_SIZE, c_long]
+                    [c_float * constants.TRISTIMULUS_SIZE, c_long]
             self.eyeone.I1_GetTriStimulus.__doc__ = \
                     self.I1_GetTriStimulus.__doc__
             self.I1_GetTriStimulus = self.eyeone.I1_GetTriStimulus
             # I1_GetDensities
             self.eyeone.I1_GetDensities.restype = c_int #enum I1_ErrorType
             self.eyeone.I1_GetDensities.argtypes = \
-                    [c_float * EyeOneConstants.DENSITY_SIZE, c_long]
+                    [c_float * constants.DENSITY_SIZE, c_long]
             self.eyeone.I1_GetDensities.__doc__ = \
                     self.I1_GetDensities.__doc__
             self.I1_GetDensities = self.eyeone.I1_GetDensities
             # I1_SetSubstrate
             self.eyeone.I1_SetSubstrate.restype = c_int #enum I1_ErrorType
             self.eyeone.I1_SetSubstrate.argtypes = \
-                    [c_float * EyeOneConstants.SPECTRUM_SIZE, c_long]
+                    [c_float * constants.SPECTRUM_SIZE, c_long]
             self.eyeone.I1_SetSubstrate.__doc__ = \
                     self.I1_SetSubstrate.__doc__
             self.I1_SetSubstrate = self.eyeone.I1_SetSubstrate
@@ -157,10 +166,10 @@ class EyeOne(object):
         Returns enum I1_ErrorType (c_int). eNoError (0), if connected.
         eDeviceNotConnected (2), if no EyeOne Pro is present.
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
-        return EyeOneConstants.eNoError
+        return constants.eNoError
 
     def I1_KeyPressed(self):
         """
@@ -171,10 +180,10 @@ class EyeOne(object):
 
         For dummy key stays always pressed.
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         #only called if self.dummy==True
-        return EyeOneConstants.eNoError
+        return constants.eNoError
 
     def I1_GetNumberOfAvailableSamples(self):
         """
@@ -190,11 +199,11 @@ class EyeOne(object):
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error occurs
         during calibration.
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
         self.calibrated = True
-        return EyeOneConstants.eNoError
+        return constants.eNoError
 
     def I1_TriggerMeasurement(self):
         """
@@ -211,15 +220,15 @@ class EyeOne(object):
         available; eDeviceNotCalibrated (3), if a (re)calibration is
         necessary.
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         #only called if self.dummy==True
         if self.calibrated:
             self.measurement_triggered = True
-            return EyeOneConstants.eNoError
+            return constants.eNoError
         else:
             self.measurement_triggered = False
-            return EyeOneConstants.eDeviceNotCalibrated
+            return constants.eDeviceNotCalibrated
 
 
     def I1_GetSpectrum(self, spectrum, index):
@@ -238,16 +247,16 @@ class EyeOne(object):
         previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
-        if not isinstance(spectrum, c_float * EyeOneConstants.SPECTRUM_SIZE):
+        if not isinstance(spectrum, c_float * constants.SPECTRUM_SIZE):
             raise TypeError('''spectrum has to be instance of c_float *
             SPECTRUM_SIZE''')
         if self.measurement_triggered:
-            return EyeOneConstants.eNoError
+            return constants.eNoError
         else:
-            return EyeOneConstants.eNoDataAvailable
+            return constants.eNoDataAvailable
 
     def I1_GetTriStimulus(self, tri_stimulus, index):
         """
@@ -265,17 +274,17 @@ class EyeOne(object):
         previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(tri_stimulus,
-                c_float * EyeOneConstants.TRISTIMULUS_SIZE):
+                c_float * constants.TRISTIMULUS_SIZE):
             raise TypeError('''tri_stimulus has to be instance of c_float *
             TRISTIMULUS_SIZE''')
         if self.measurement_triggered:
-            return EyeOneConstants.eNoError
+            return constants.eNoError
         else:
-            return EyeOneConstants.eNoDataAvailable
+            return constants.eNoDataAvailable
 
     def I1_GetDensities(self, densities, index):
         """
@@ -297,17 +306,17 @@ class EyeOne(object):
         If pxAutoDensity is not null, \*pxAutoDensity will be set
         accordingly.
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(densities, c_float *
-                EyeOneConstants.DENSITY_SIZE):
+                constants.DENSITY_SIZE):
             raise TypeError('''densities has to be instance of c_float *
             DENSITY_SIZE''')
         if self.measurement_triggered:
-            return EyeOneConstants.eNoError
+            return constants.eNoError
         else:
-            return EyeOneConstants.eNoDataAvailable
+            return constants.eNoDataAvailable
 
     def I1_SetSubstrate(self, substrate_spectrum):
         """
@@ -324,17 +333,17 @@ class EyeOne(object):
         """
         # only called if self.dummy==True
         if not isinstance(substrate_spectrum, c_float *
-                EyeOneConstants.SPECTRUM_SIZE):
+                constants.SPECTRUM_SIZE):
             raise TypeError('''substrate_spectrum has to be instance of
             c_float * SPECTRUM_SIZE''')
         self.density_spectrum_set = True
-        return EyeOneConstants.eNoError
+        return constants.eNoError
 
     def I1_SetOption(self, option, value):
         """
         Sets given option/key (c_char_p) to given value (c_char_p).
         
-        Possible options (see SDK manual or EyeOneConstants.py for possible
+        Possible options (see SDK manual or constants.py for possible
         values):
 
         * COLOR_SPACE_KEY
@@ -349,20 +358,20 @@ class EyeOne(object):
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error
         occurs.
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(value, c_char_p):
             value = c_char_p(value)
         if isinstance(option, c_char_p):
             self.options[option.value] = value
-        return EyeOneConstants.eNoError
+        return constants.eNoError
 
     def I1_GetOption(self, option):
         """
         Gets option/key (c_char_p).
         
-        Possible options (see SDK manual or EyeOneConstants.py for possible
+        Possible options (see SDK manual or constants.py for possible
         values):
 
         * COLOR_SPACE_KEY
@@ -376,7 +385,7 @@ class EyeOne(object):
 
         Returns value (c_char_p).
 
-        For details see EyeOneConstants.py
+        For details see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(option, c_char_p):
@@ -429,12 +438,12 @@ if __name__ == "__main__":
         installed?\nLoad dummy.''')
         eyeone = EyeOne(dummy=True)
 
-    if eyeone.I1_IsConnected() == EyeOneConstants.eNoError:
+    if eyeone.I1_IsConnected() == constants.eNoError:
         print("EyeOne Pro is connected.")
 
     eyeone.I1_Calibrate()
     eyeone.I1_TriggerMeasurement()
-    spectrum = (c_float * EyeOneConstants.SPECTRUM_SIZE)()
+    spectrum = (c_float * constants.SPECTRUM_SIZE)()
     eyeone.I1_GetSpectrum(spectrum, 0)
     print("This is a spectrum:")
     print([float(f) for f in spectrum])
