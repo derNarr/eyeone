@@ -7,13 +7,13 @@
 #
 # GPL 3.0+ or (cc) by-sa (http://creativecommons.org/licenses/by-sa/3.0/)
 #
-# content:
+# content: (1) class EyeOne
 #
 # input: --
 # output: --
 #
 # created --
-# last mod 2012-05-29 KS
+# last mod 2012-05-29 22:26 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
@@ -22,6 +22,7 @@
 # Maybe some Copyrights belongs to X-Rite Inc.
 
 from ctypes import cdll, c_int, c_long, c_float, c_char_p
+import time
 #from exceptions import OSError, ImportError, BaseException, KeyError
 # if it fails to load dll
 
@@ -53,6 +54,11 @@ class EyeOne(object):
     * I1_SetSubstrate
     * I1_SetOption -- sets options
     * I1_GetOption -- gets options
+
+    Additionally there are some method for convenience:
+
+        calibrate : calibrates the EyeOne
+        is_calibrated : bool, which states if the eyeone is calibrated
     """
 
     def __init__(self, dummy=False):
@@ -67,6 +73,7 @@ class EyeOne(object):
         EyeOne Pro without any problems.
         """
         self.dummy = dummy
+        self.is_calibrated = False
 
         try:
             if self.dummy is True:
@@ -398,21 +405,23 @@ class EyeOne(object):
                     "Undefined" in dummy mode.''')
             return c_char_p("Undefined") 
 
-    def calibrateEyeOne(self):
+    def calibrate(self, measurement_mode=constants.I1_SINGLE_EMISSION,
+            color_space=COLOR_SPACE_CIExyY):
         """
-        Sets EyeOne Pro to correct measurement mode and calibrates EyeOne
-        Pro for use.
+        Sets EyeOne Pro to measurement mode and color space measurement
+        mode and calibrates EyeOne Pro for use.
+
+        If successful, method returns True, otherwise False.
         """
         # set EyeOne Pro variables
-        if(self.I1_SetOption(I1_MEASUREMENT_MODE, I1_SINGLE_EMISSION) ==
-                eNoError):
-            print("Measurement mode set to single emission.")
+        if(self.I1_SetOption(constants.I1_MEASUREMENT_MODE,
+            measurement_mode) == constants.eNoError):
+            print("Measurement mode set to " + measurement_mode + ".")
         else:
             print("Failed to set measurement mode.")
             return False
-        if(self.I1_SetOption(COLOR_SPACE_KEY, COLOR_SPACE_CIExyY) ==
-                eNoError):
-            print("Color space set to CIExyY.")
+        if(self.I1_SetOption(COLOR_SPACE_KEY, color_space) == eNoError):
+            print("Color space set to " + color_space + ".")
         else:
             print("Failed to set color space.")
             return False
@@ -427,6 +436,7 @@ class EyeOne(object):
             print("Calibration of EyeOne Pro failed. Please RESTART "
             + "calibration")
             return False
+        self.is_calibrated = True
         return True
 
 
