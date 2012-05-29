@@ -1,6 +1,6 @@
 eyeone is a python-wrapper for the EyeOne Pro.
 
-Copyright (C) 2010-2012  Konstantin Sering, Nora Umbach, Sominik Wabersich
+Copyright (C) 2010-2012  Konstantin Sering, Nora Umbach, Dominik Wabersich
 <colorlab[at]psycho.uni-tuebingen.de>
 
 Maybe some Copyrights belongs to X-Rite Inc.
