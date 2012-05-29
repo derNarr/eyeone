@@ -389,6 +389,37 @@ class EyeOne(object):
                     "Undefined" in dummy mode.''')
             return c_char_p("Undefined") 
 
+    def calibrateEyeOne(self):
+        """
+        Sets EyeOne Pro to correct measurement mode and calibrates EyeOne
+        Pro for use.
+        """
+        # set EyeOne Pro variables
+        if(self.I1_SetOption(I1_MEASUREMENT_MODE, I1_SINGLE_EMISSION) ==
+                eNoError):
+            print("Measurement mode set to single emission.")
+        else:
+            print("Failed to set measurement mode.")
+            return False
+        if(self.I1_SetOption(COLOR_SPACE_KEY, COLOR_SPACE_CIExyY) ==
+                eNoError):
+            print("Color space set to CIExyY.")
+        else:
+            print("Failed to set color space.")
+            return False
+        # calibrate EyeOne Pro
+        print("\nPlease put EyeOne Pro on calibration plate and "
+        + "press key to start calibration.")
+        while(self.I1_KeyPressed() != eNoError):
+            time.sleep(0.01)
+        if (self.I1_Calibrate() == eNoError):
+            print("Calibration of EyeOne Pro done.")
+        else:
+            print("Calibration of EyeOne Pro failed. Please RESTART "
+            + "calibration")
+            return False
+        return True
+
 
 if __name__ == "__main__":
     try:
