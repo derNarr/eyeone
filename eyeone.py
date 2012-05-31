@@ -13,7 +13,7 @@
 # output: --
 #
 # created --
-# last mod 2012-05-29 22:26 KS
+# last mod 2012-05-31 13:09 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
@@ -23,6 +23,7 @@
 
 from ctypes import cdll, c_int, c_long, c_float, c_char_p
 import time
+import random
 #from exceptions import OSError, ImportError, BaseException, KeyError
 # if it fails to load dll
 
@@ -261,6 +262,8 @@ class EyeOne(object):
             raise TypeError('''spectrum has to be instance of c_float *
             SPECTRUM_SIZE''')
         if self.measurement_triggered:
+            spectrum[:] = [random.uniform(0, 1) for i in
+                    range(constants.SPECTRUM_SIZE)]
             return constants.eNoError
         else:
             return constants.eNoDataAvailable
@@ -289,6 +292,8 @@ class EyeOne(object):
             raise TypeError('''tri_stimulus has to be instance of c_float *
             TRISTIMULUS_SIZE''')
         if self.measurement_triggered:
+            tri_stimulus[:] = [random.uniform(0, 1) for i in
+                    range(constants.TRISTIMULUS_SIZE)]
             return constants.eNoError
         else:
             return constants.eNoDataAvailable
@@ -406,12 +411,28 @@ class EyeOne(object):
             return c_char_p("Undefined") 
 
     def calibrate(self, measurement_mode=constants.I1_SINGLE_EMISSION,
-            color_space=COLOR_SPACE_CIExyY):
+            color_space=constants.COLOR_SPACE_CIExyY, 
+            final_prompt="\nPlease put EyeOne-Pro in measurement position"
+            + "and hit button to start measurement."):
         """
         Sets EyeOne Pro to measurement mode and color space measurement
         mode and calibrates EyeOne Pro for use.
 
-        If successful, method returns True, otherwise False.
+        :Parameters:
+
+            measurement_mode : *eyeone.constants.I1_SINGLE_EMISSION* 
+                or other string defined in eyeone.constants
+            color_space : *eyeone.constants.COLOR_SPACE_CIExyY*
+                or other string defined in eyeone.constants
+            final_prompt : string or None
+                the final prompt is printed to stdout in the end and the
+                EyeOne waits for a button press. If None nothing is printed
+                and EyeOne do not wait for button press.
+
+        If successful, method returns True, otherwise False. Check also the
+        attribute EyeOne.is_calibrated. It stores a boolean, which is True,
+        when the EyeOne is already calibrated.
+
         """
         # set EyeOne Pro variables
         if(self.I1_SetOption(constants.I1_MEASUREMENT_MODE,
@@ -437,6 +458,12 @@ class EyeOne(object):
             + "calibration")
             return False
         self.is_calibrated = True
+        if final_prompt == None:
+            return True
+        # prompt for click on button of EyeOne Pro
+        print(final_prompt)
+        while(eyeone.I1_KeyPressed() != eNoError):
+            time.sleep(0.01)
         return True
 
 
