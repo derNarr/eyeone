@@ -13,13 +13,18 @@
 # output: --
 #
 # created --
-# last mod 2012-05-31 13:09 KS
+# last mod 2012-06-04 09:46 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
 # MeasurementConditions.h of the EyeOne SKD 3.4.3 from x-rite
 #
 # Maybe some Copyrights belongs to X-Rite Inc.
+
+"""
+This module provides a class definition that wraps the eye one dll file.
+
+"""
 
 from ctypes import cdll, c_int, c_long, c_float, c_char_p
 import time
@@ -60,6 +65,21 @@ class EyeOne(object):
 
         calibrate : calibrates the EyeOne
         is_calibrated : bool, which states if the eyeone is calibrated
+
+    :Example:
+
+    >>> import eyeone, constants
+    ... from ctypes import c_float
+    ... eo = eyeone.EyeOne()
+    ... if eo.I1_IsConnected() == constants.eNoError:
+    ...     print("EyeOne Pro is connected.")
+    ... eo.I1_Calibrate()
+    ... eo.I1_TriggerMeasurement()
+    ... spectrum = (c_float * constants.SPECTRUM_SIZE)()
+    ... eo.I1_GetSpectrum(spectrum, 0)
+    ... print("This is a spectrum:")
+    ... print([float(f) for f in spectrum])
+
     """
 
     def __init__(self, dummy=False):
@@ -157,9 +177,11 @@ class EyeOne(object):
                   ##################################################
                   ''')
             # set standard values for dummy
-            self.calibrated = False
-            self.measurement_triggered = False
+            self.is_calibrated = False
+            self._measurement_triggered = False
             self.options = dict()
+            self._tri_stimulus = (c_float * constants.TRISTIMULUS_SIZE)()
+            self._spectrum = (c_float * constants.SPECTRUM_SIZE)()
 
 
     ######################################################################
@@ -210,7 +232,7 @@ class EyeOne(object):
         For details see constants.py
         """
         # only called if self.dummy==True
-        self.calibrated = True
+        self.is_calibrated = True
         return constants.eNoError
 
     def I1_TriggerMeasurement(self):
@@ -231,11 +253,15 @@ class EyeOne(object):
         For details see constants.py
         """
         #only called if self.dummy==True
-        if self.calibrated:
-            self.measurement_triggered = True
+        if self.is_calibrated:
+            self._measurement_triggered = True
+            self._tri_stimulus[:] = [random.uniform(0, 1) for i in
+                    range(constants.TRISTIMULUS_SIZE)]
+            self._spectrum[:] = [random.uniform(0, 1) for i in
+                    range(constants.SPECTRUM_SIZE)]
             return constants.eNoError
         else:
-            self.measurement_triggered = False
+            self._measurement_triggered = False
             return constants.eDeviceNotCalibrated
 
 
@@ -261,9 +287,8 @@ class EyeOne(object):
         if not isinstance(spectrum, c_float * constants.SPECTRUM_SIZE):
             raise TypeError('''spectrum has to be instance of c_float *
             SPECTRUM_SIZE''')
-        if self.measurement_triggered:
-            spectrum[:] = [random.uniform(0, 1) for i in
-                    range(constants.SPECTRUM_SIZE)]
+        if self._measurement_triggered:
+            spectrum[:] = self._spectrum[:]
             return constants.eNoError
         else:
             return constants.eNoDataAvailable
@@ -291,9 +316,8 @@ class EyeOne(object):
                 c_float * constants.TRISTIMULUS_SIZE):
             raise TypeError('''tri_stimulus has to be instance of c_float *
             TRISTIMULUS_SIZE''')
-        if self.measurement_triggered:
-            tri_stimulus[:] = [random.uniform(0, 1) for i in
-                    range(constants.TRISTIMULUS_SIZE)]
+        if self._measurement_triggered:
+            tri_stimulus[:] = self._tri_stimulus[:]
             return constants.eNoError
         else:
             return constants.eNoDataAvailable
@@ -325,7 +349,7 @@ class EyeOne(object):
                 constants.DENSITY_SIZE):
             raise TypeError('''densities has to be instance of c_float *
             DENSITY_SIZE''')
-        if self.measurement_triggered:
+        if self._measurement_triggered:
             return constants.eNoError
         else:
             return constants.eNoDataAvailable
@@ -467,21 +491,4 @@ class EyeOne(object):
         return True
 
 
-if __name__ == "__main__":
-    try:
-        eyeone = EyeOne()
-    except IOError:
-        print('''EyeOne.dll NOT FOUND. Is driver of EyeOne Pro
-        installed?\nLoad dummy.''')
-        eyeone = EyeOne(dummy=True)
-
-    if eyeone.I1_IsConnected() == constants.eNoError:
-        print("EyeOne Pro is connected.")
-
-    eyeone.I1_Calibrate()
-    eyeone.I1_TriggerMeasurement()
-    spectrum = (c_float * constants.SPECTRUM_SIZE)()
-    eyeone.I1_GetSpectrum(spectrum, 0)
-    print("This is a spectrum:")
-    print([float(f) for f in spectrum])
 
