@@ -13,7 +13,7 @@
 # output: --
 #
 # created --
-# last mod 2012-06-04 09:46 KS
+# last mod 2012-06-11 09:03 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
@@ -26,6 +26,8 @@ This module provides a class definition that wraps the eye one dll file.
 
 """
 
+from __future__ import print_function
+import sys
 from ctypes import cdll, c_int, c_long, c_float, c_char_p
 import time
 import random
@@ -69,16 +71,16 @@ class EyeOne(object):
     :Example:
 
     >>> import eyeone, constants
-    ... from ctypes import c_float
-    ... eo = eyeone.EyeOne()
-    ... if eo.I1_IsConnected() == constants.eNoError:
+    >>> from ctypes import c_float
+    >>> eo = eyeone.EyeOne()
+    >>> if eo.I1_IsConnected() == constants.eNoError:
     ...     print("EyeOne Pro is connected.")
-    ... eo.I1_Calibrate()
-    ... eo.I1_TriggerMeasurement()
-    ... spectrum = (c_float * constants.SPECTRUM_SIZE)()
-    ... eo.I1_GetSpectrum(spectrum, 0)
-    ... print("This is a spectrum:")
-    ... print([float(f) for f in spectrum])
+    >>> eo.I1_Calibrate()
+    >>> eo.I1_TriggerMeasurement()
+    >>> spectrum = (c_float * constants.SPECTRUM_SIZE)()
+    >>> eo.I1_GetSpectrum(spectrum, 0)
+    >>> print("This is a spectrum:")
+    >>> print([float(f) for f in spectrum])
 
     """
 
@@ -175,7 +177,7 @@ class EyeOne(object):
                   ##################### WARNING ####################
                   # Cannot load EyeOne.dll. Creating EyeOne dummy! #
                   ##################################################
-                  ''')
+                  ''', file=sys.stderr)
             # set standard values for dummy
             self.is_calibrated = False
             self._measurement_triggered = False
@@ -429,9 +431,10 @@ class EyeOne(object):
         try:
             return self.options[option.value]
         except KeyError:
-            print("WARNING: option might not be there in a real eyeone")
+            print("WARNING: option might not be there in a real eyeone",
+                    file=sys.stderr)
             print('''If option is not set explicitly, I1_GetOption returns
-                    "Undefined" in dummy mode.''')
+                    "Undefined" in dummy mode.''', file=sys.stderr)
             return c_char_p("Undefined") 
 
     def calibrate(self, measurement_mode=constants.I1_SINGLE_EMISSION,
@@ -465,7 +468,8 @@ class EyeOne(object):
         else:
             print("Failed to set measurement mode.")
             return False
-        if(self.I1_SetOption(COLOR_SPACE_KEY, color_space) == eNoError):
+        if(self.I1_SetOption(constants.COLOR_SPACE_KEY, color_space) ==
+                constants.eNoError):
             print("Color space set to " + color_space + ".")
         else:
             print("Failed to set color space.")
@@ -473,9 +477,9 @@ class EyeOne(object):
         # calibrate EyeOne Pro
         print("\nPlease put EyeOne Pro on calibration plate and "
         + "press key to start calibration.")
-        while(self.I1_KeyPressed() != eNoError):
+        while(self.I1_KeyPressed() != constants.eNoError):
             time.sleep(0.01)
-        if (self.I1_Calibrate() == eNoError):
+        if (self.I1_Calibrate() == constants.eNoError):
             print("Calibration of EyeOne Pro done.")
         else:
             print("Calibration of EyeOne Pro failed. Please RESTART "
@@ -486,9 +490,7 @@ class EyeOne(object):
             return True
         # prompt for click on button of EyeOne Pro
         print(final_prompt)
-        while(eyeone.I1_KeyPressed() != eNoError):
+        while(self.I1_KeyPressed() != constants.eNoError):
             time.sleep(0.01)
         return True
-
-
 
