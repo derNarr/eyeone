@@ -13,7 +13,7 @@
 # output: --
 #
 # created --
-# last mod 2012-06-11 09:03 KS
+# last mod 2012-06-14 15:28 KS
 #
 # This file defines a class which implements the python adapted variable
 # definitions and function prototypes of the EyeOne.h and the
@@ -184,6 +184,7 @@ class EyeOne(object):
             self.options = dict()
             self._tri_stimulus = (c_float * constants.TRISTIMULUS_SIZE)()
             self._spectrum = (c_float * constants.SPECTRUM_SIZE)()
+            self._density_spectrum_set = False
 
 
     ######################################################################
@@ -374,7 +375,7 @@ class EyeOne(object):
                 constants.SPECTRUM_SIZE):
             raise TypeError('''substrate_spectrum has to be instance of
             c_float * SPECTRUM_SIZE''')
-        self.density_spectrum_set = True
+        self._density_spectrum_set = True
         return constants.eNoError
 
     def I1_SetOption(self, option, value):
