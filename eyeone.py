@@ -65,10 +65,10 @@ class EyeOne(object):
 
     Additionally there are some method for convenience:
 
-        calibrate : calibrates the EyeOne
-        is_calibrated : bool, which states if the eyeone is calibrated
+        calibrate: calibrates the EyeOne
+        is_calibrated: bool, which states if the eyeone is calibrated
 
-    :Example:
+    Example:
 
     >>> import eyeone, constants
     >>> from ctypes import c_float
@@ -446,13 +446,14 @@ class EyeOne(object):
         Sets EyeOne Pro to measurement mode and color space measurement
         mode and calibrates EyeOne Pro for use.
 
-        :Parameters:
+        Parameters:
+            measurement_mode: *eyeone.constants.I1_SINGLE_EMISSION* 
+                or other string defined in eyeone.constants
 
-            measurement_mode : *eyeone.constants.I1_SINGLE_EMISSION* 
+            color_space: *eyeone.constants.COLOR_SPACE_CIExyY*
                 or other string defined in eyeone.constants
-            color_space : *eyeone.constants.COLOR_SPACE_CIExyY*
-                or other string defined in eyeone.constants
-            final_prompt : string or None
+
+            final_prompt: string or None
                 the final prompt is printed to stdout in the end and the
                 EyeOne waits for a button press. If None nothing is printed
                 and EyeOne do not wait for button press.
