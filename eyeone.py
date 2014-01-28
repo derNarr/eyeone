@@ -22,7 +22,7 @@
 # Maybe some Copyrights belongs to X-Rite Inc.
 
 """
-This module provides a class definition that wraps the eye one dll file.
+This module provides a class that wraps the i1 Pro dll file.
 
 """
 
@@ -37,7 +37,7 @@ import random
 import constants
 
 ###########################################################
-### Prototypes of exported functions (EyeOne.dll) BEGIN ###
+### Prototypes of exported functions (eyeone.dll) BEGIN ###
 ###########################################################
 
 # I don't if it is possible to implement the callback the error handling ,
@@ -46,13 +46,13 @@ import constants
 
 class EyeOne(object):
     """
-    Encapsulates the functions of EyeOne.dll.
+    Encapsulates the functions of eyeone.dll.
 
     EyeOne gives you an object eyeone with the following methods
-    available. For the methods ctypes prototypes are defined.
+    available. For the methods ctype prototypes are defined.
 
-    * I1_IsConnected -- checks if EyeOne Pro is connected
-    * I1_KeyPressed -- checks if key on EyeOne Pro has been pressed
+    * I1_IsConnected -- checks if i1 Pro is connected
+    * I1_KeyPressed -- checks if key on i1 Pro has been pressed
     * I1_GetNumberOfAvailableSamples
     * I1_Calibrate -- triggers calibration
     * I1_TriggerMeasurement -- triggers measurement
@@ -63,10 +63,10 @@ class EyeOne(object):
     * I1_SetOption -- sets options
     * I1_GetOption -- gets options
 
-    Additionally there are some method for convenience:
+    Additionally, there are some methods for convenience:
 
-        calibrate: calibrates the EyeOne
-        is_calibrated: bool, which states if the eyeone is calibrated
+        calibrate: calibrates the i1 Pro
+        is_calibrated: bool, which states if the i1 Pro is calibrated
 
     Example:
 
@@ -74,7 +74,7 @@ class EyeOne(object):
     >>> from ctypes import c_float
     >>> eo = eyeone.EyeOne()
     >>> if eo.I1_IsConnected() == constants.eNoError:
-    ...     print("EyeOne Pro is connected.")
+    ...     print("i1 Pro is connected.")
     >>> eo.I1_Calibrate()
     >>> eo.I1_TriggerMeasurement()
     >>> spectrum = (c_float * constants.SPECTRUM_SIZE)()
@@ -86,14 +86,14 @@ class EyeOne(object):
 
     def __init__(self, dummy=False):
         """
-        Loads runtime library (on win32 EyeOne.dll).
+        Loads runtime library (on win32 eyeone.dll).
 
         If dummy=True, no runtime library is loaded. The EyeOne object
         behaves very similar to a "real" object, but does not connect to
-        EyeOne Pro and gives some artificial data.
+        i1 Pro and gives some artificial data.
 
         For now the dummy gives no error codes. So the dummy behaves as a
-        EyeOne Pro without any problems.
+        i1 Pro without any problems.
         """
         self.dummy = dummy
         self.is_calibrated = False
@@ -175,7 +175,7 @@ class EyeOne(object):
         except(OSError, ImportError, BaseException): 
             print('''
                   ##################### WARNING ####################
-                  # Cannot load EyeOne.dll. Creating EyeOne dummy! #
+                  # Cannot load eyeone.dll. Creating EyeOne dummy! #
                   ##################################################
                   ''', file=sys.stderr)
             # set standard values for dummy
@@ -194,12 +194,12 @@ class EyeOne(object):
     ######################################################################
     def I1_IsConnected(self):
         """
-        Tests if EyeOne Pro is connected.
+        Tests if i1 Pro is connected.
         
         Returns enum I1_ErrorType (c_int). eNoError (0), if connected.
-        eDeviceNotConnected (2), if no EyeOne Pro is present.
+        eDeviceNotConnected (2), if no i1 Pro is present.
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         return constants.eNoError
@@ -211,9 +211,9 @@ class EyeOne(object):
         Returns enum I1_ErrorType (c_int). eNoError (0), if button was
         pressed. eKeyNotPressed (4), if button was not pressed.
 
-        For dummy key stays always pressed.
+        For dummy, key stays always pressed.
 
-        For details see constants.py
+        For details, see constants.py
         """
         #only called if self.dummy==True
         return constants.eNoError
@@ -227,12 +227,12 @@ class EyeOne(object):
 
     def I1_Calibrate(self):
         """
-        Calibrates EyeOne Pro.
+        Calibrates i1 Pro.
         
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error occurs
         during calibration.
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         self.is_calibrated = True
@@ -244,16 +244,16 @@ class EyeOne(object):
 
         Triggers measurement depending on measurement mode set by
         I1_SetOption. If measurement mode is set to I1_SINGLE_EMISSION or
-        I1_SCANNING_REFLECTANCE it is necessary to calibrate the EyeOne Pro
+        I1_SCANNING_REFLECTANCE it is necessary to calibrate the i1 Pro
         before any measurement can be triggered. Use GetSpectrum(index),
-        I1_GetTriStimulus(index) or I1_GetDensity(index) to fetch result.
+        I1_GetTriStimulus(index), or I1_GetDensity(index) to fetch results.
                
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error occurs
         during calibration; eDeviceNotConnected (2), if no device is
         available; eDeviceNotCalibrated (3), if a (re)calibration is
         necessary.
 
-        For details see constants.py
+        For details, see constants.py
         """
         #only called if self.dummy==True
         if self.is_calibrated:
@@ -284,7 +284,7 @@ class EyeOne(object):
         previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(spectrum, c_float * constants.SPECTRUM_SIZE):
@@ -312,7 +312,7 @@ class EyeOne(object):
         previously triggered scan specify an index between 0 and
         (I1_GetNumberOfScannedSamples() - 1).
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(tri_stimulus,
@@ -345,7 +345,7 @@ class EyeOne(object):
         If pxAutoDensity is not null, \*pxAutoDensity will be set
         accordingly.
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(densities, c_float *
@@ -397,7 +397,7 @@ class EyeOne(object):
         Returns enum I1_ErrorType (c_int). eNoError (0), if no error
         occurs.
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(value, c_char_p):
@@ -424,7 +424,7 @@ class EyeOne(object):
 
         Returns value (c_char_p).
 
-        For details see constants.py
+        For details, see constants.py
         """
         # only called if self.dummy==True
         if not isinstance(option, c_char_p):
@@ -432,7 +432,7 @@ class EyeOne(object):
         try:
             return self.options[option.value]
         except KeyError:
-            print("WARNING: option might not be there in a real eyeone",
+            print("WARNING: option might not be there in a real i1 Pro.",
                     file=sys.stderr)
             print('''If option is not set explicitly, I1_GetOption returns
                     "Undefined" in dummy mode.''', file=sys.stderr)
@@ -440,11 +440,11 @@ class EyeOne(object):
 
     def calibrate(self, measurement_mode=constants.I1_SINGLE_EMISSION,
             color_space=constants.COLOR_SPACE_CIExyY, 
-            final_prompt="\nPlease put EyeOne-Pro in measurement position"
+            final_prompt="\nPlease put i1 Pro in measurement position"
             + "and hit button to start measurement."):
         """
-        Sets EyeOne Pro to measurement mode and color space measurement
-        mode and calibrates EyeOne Pro for use.
+        Sets i1 Pro to measurement mode and color space and calibrates i1
+        Pro for use.
 
         Parameters:
             measurement_mode: *eyeone.constants.I1_SINGLE_EMISSION* 
@@ -455,15 +455,15 @@ class EyeOne(object):
 
             final_prompt: string or None
                 the final prompt is printed to stdout in the end and the
-                EyeOne waits for a button press. If None nothing is printed
-                and EyeOne do not wait for button press.
+                i1 Pro waits for a button press. If None nothing is printed
+                and i1 Pro does not wait for button press.
 
         If successful, method returns True, otherwise False. Check also the
         attribute EyeOne.is_calibrated. It stores a boolean, which is True,
-        when the EyeOne is already calibrated.
+        when the i1 Pro is already calibrated.
 
         """
-        # set EyeOne Pro variables
+        # set i1 Pro variables
         if(self.I1_SetOption(constants.I1_MEASUREMENT_MODE,
             measurement_mode) == constants.eNoError):
             print("Measurement mode set to " + measurement_mode + ".")
@@ -476,21 +476,21 @@ class EyeOne(object):
         else:
             print("Failed to set color space.")
             return False
-        # calibrate EyeOne Pro
-        print("\nPlease put EyeOne Pro on calibration plate and "
+        # calibrate i1 Pro
+        print("\nPlease put i1 Pro on calibration plate and "
         + "press key to start calibration.")
         while(self.I1_KeyPressed() != constants.eNoError):
             time.sleep(0.01)
         if (self.I1_Calibrate() == constants.eNoError):
-            print("Calibration of EyeOne Pro done.")
+            print("Calibration of i1 Pro done.")
         else:
-            print("Calibration of EyeOne Pro failed. Please RESTART "
+            print("Calibration of i1 Pro failed. Please RESTART "
             + "calibration")
             return False
         self.is_calibrated = True
         if final_prompt == None:
             return True
-        # prompt for click on button of EyeOne Pro
+        # prompt for click on button of i1 Pro
         print(final_prompt)
         while(self.I1_KeyPressed() != constants.eNoError):
             time.sleep(0.01)

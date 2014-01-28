@@ -1,6 +1,6 @@
 """
-eyeone provides the constants in EyeOneConstants and a ctypes interface to
-the runtime libraries of the EyeOne.
+eyeone provides the constants in constants and a ctypes interface to
+the runtime libraries of the i1 Pro.
 """
 
 __all__ = ['EyeOne','EyeOneConstants']
